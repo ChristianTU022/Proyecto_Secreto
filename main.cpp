@@ -14,6 +14,7 @@ void crear_materia();
 void leer_materias();
 fstream leer_archivo(string entidad);
 void editar_materia ();
+void eliminar_materia();
 struct materia
 {
     string codigo;
@@ -24,6 +25,42 @@ int main()
 {
     menu();
     return 0;
+}
+void eliminar_materia (){
+    string codigo, materia, comparar, respuesta;
+    bool flag = false;
+    fstream leer = leer_archivo("materia.txt");
+        cout<<"Digite el codigo de la materia que desea eliminar."<<endl;
+        cin>>comparar;
+
+        while (!leer.eof())
+        {
+            leer >> codigo;
+            leer >> materia;
+            if (comparar != codigo)
+            {
+                string registro = codigo + " " + materia;
+                escribir_archivo("temp.txt", registro);
+            } else {
+                flag = true;
+            } 
+        }
+        // if (flag = true)
+        // {
+        //     cout<<" Registro no encontrado"<<endl;
+        //     flag = false;
+        //     cout<<"Desee eliminar algun otro registro?"<<endl;
+        //     cin>>respuesta;
+        //     if (/* condition */)
+        //     {
+        //         /* code */
+        //     }
+            
+        // }
+        
+        leer.close();
+        remove ("materia.txt");
+        rename ("temp.txt", "materia.txt");
 }
 void editar_materia (){
     string codigo, materia, nom, comparar;
@@ -127,6 +164,9 @@ int administrar_materia()
         break;
     case 3:
         editar_materia();
+        break;
+    case 4:
+        eliminar_materia();
         break;
     default:
         break;
