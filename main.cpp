@@ -12,7 +12,7 @@ int opciones_base(string entidad);
 void escribir_archivo(string entidad, string registro);
 void crear_materia();
 void leer_materias();
-void leer_archivo(string entidad);
+fstream leer_archivo(string entidad);
 struct materia
 {
     string codigo;
@@ -26,27 +26,28 @@ int main()
 }
 void leer_materias()
 {
-    leer_archivo("materia.txt");
-}
-void leer_archivo(string entidad)
-{
     string codigo, materia;
-    fstream leer;
-    leer.open(entidad);
-    if (leer.is_open())
-    {
-        while (!leer.eof())
+    fstream leer = leer_archivo("materia.txt");
+     while (!leer.eof())
         {
             leer >> codigo;
             leer >> materia;
             cout << codigo << "\t " << materia << endl;
         }
+        leer.close();
+}
+fstream leer_archivo(string entidad)
+{
+    fstream leer;
+    leer.open(entidad);
+    if (leer.is_open())
+    {
+       return leer;
     }
     else
     {
-        cout << "El archivo no se encuentra diponible" << endl;
+        cout << "El archivo no se encuentra diponible." << endl;
     }
-    leer.close();
 }
 void crear_materia()
 {
@@ -71,7 +72,7 @@ void escribir_archivo(string entidad, string registro)
     {
 
         cout << "registro agregado." << endl;
-        new_file << registro << "\n";
+        new_file <<"\n" << registro ;
         new_file.close();
     }
 }
