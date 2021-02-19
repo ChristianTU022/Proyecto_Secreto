@@ -13,6 +13,7 @@ void escribir_archivo(string entidad, string registro);
 void crear_materia();
 void leer_materias();
 fstream leer_archivo(string entidad);
+void editar_materia ();
 struct materia
 {
     string codigo;
@@ -24,17 +25,43 @@ int main()
     menu();
     return 0;
 }
+void editar_materia (){
+    string codigo, materia, nom, comparar;
+    fstream leer = leer_archivo("materia.txt");
+        cout<<"Digite el codigo de la materia que desea actualizar."<<endl;
+        cin>>comparar;
+        cout<<"¿Que nombre desea colocarle a la materia de codigo "<<comparar<<endl;
+        cin>>nom;
+        while (!leer.eof())
+        {
+            leer >> codigo;
+            leer >> materia;
+            if (comparar == codigo)
+            {
+                materia = nom;
+            }
+
+            string registro = codigo + " " + materia;
+            escribir_archivo("temp.txt", registro);
+        }
+        leer.close();
+        remove ("materia.txt");
+        rename ("temp.txt", "materia.txt");
+}
 void leer_materias()
 {
     string codigo, materia;
     fstream leer = leer_archivo("materia.txt");
+     cout << "==========================================================" << endl;
      while (!leer.eof())
         {
             leer >> codigo;
             leer >> materia;
-            cout << codigo << "\t " << materia << endl;
+            cout<< "\t\t" << codigo << "\t " << materia <<"\t\t" <<endl;
+            cout<<"-----------------------------------------------------"<<endl;
         }
         leer.close();
+     cout << "==========================================================" << endl;
 }
 fstream leer_archivo(string entidad)
 {
@@ -98,7 +125,9 @@ int administrar_materia()
     case 2:
         leer_materias();
         break;
-
+    case 3:
+        editar_materia();
+        break;
     default:
         break;
     }
