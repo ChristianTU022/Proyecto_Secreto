@@ -15,24 +15,28 @@ void leer_materias();
 fstream leer_archivo(string entidad);
 void editar_materia ();
 void eliminar_materia();
+
 struct materia
 {
     string codigo;
     string nom_materia;
 };
 
+
 int main()
 {
     menu();
     return 0;
 }
-void eliminar_materia (){
-    string codigo, materia, comparar, respuesta;
-    bool flag = false;
-    fstream leer = leer_archivo("materia.txt");
-        cout<<"Digite el codigo de la materia que desea eliminar."<<endl;
-        cin>>comparar;
 
+void eliminar_materia (){
+    string codigo, materia, comparar;
+    string respuesta;
+    fstream leer = leer_archivo("materia.txt");
+    cout << "==========================================================================" << endl;
+        cout << "\t\tDigite el codigo de la materia que desea eliminar."<<endl;
+        cin >> comparar;
+        cout <<"---------------------------------------------------------------------------" << endl;
         while (!leer.eof())
         {
             leer >> codigo;
@@ -41,34 +45,34 @@ void eliminar_materia (){
             {
                 string registro = codigo + " " + materia;
                 escribir_archivo("temp.txt", registro);
-            } else {
-                flag = true;
             } 
         }
-        // if (flag = true)
-        // {
-        //     cout<<" Registro no encontrado"<<endl;
-        //     flag = false;
-        //     cout<<"Desee eliminar algun otro registro?"<<endl;
-        //     cin>>respuesta;
-        //     if (/* condition */)
-        //     {
-        //         /* code */
-        //     }
-            
-        // }
-        
+        cout <<"---------------------------------------------------------------------------" << endl;
+        cout << "\t\tDesee eliminar algun otro registro?"<<endl;
+        cin >> respuesta;
         leer.close();
         remove ("materia.txt");
         rename ("temp.txt", "materia.txt");
+        if (respuesta == "si")
+        {
+            eliminar_materia();
+        } else if (respuesta == "no")
+        {
+            administrar_materia();
+        }
+        administrar_materia();
 }
+
 void editar_materia (){
     string codigo, materia, nom, comparar;
     fstream leer = leer_archivo("materia.txt");
-        cout<<"Digite el codigo de la materia que desea actualizar."<<endl;
-        cin>>comparar;
-        cout<<"¿Que nombre desea colocarle a la materia de codigo "<<comparar<<endl;
-        cin>>nom;
+        cout << "==========================================================================" << endl;
+        cout << "\t\tDigite el codigo de la materia que desea actualizar." << endl;
+        cin >> comparar;
+        cout <<"---------------------------------------------------------------------------" << endl;
+        cout << "\t\tQue nombre desea colocarle a la materia de codigo " << comparar << "?"<< endl;
+        cin >> nom;
+        cout <<"---------------------------------------------------------------------------" << endl;
         while (!leer.eof())
         {
             leer >> codigo;
@@ -84,7 +88,11 @@ void editar_materia (){
         leer.close();
         remove ("materia.txt");
         rename ("temp.txt", "materia.txt");
+        cout << "==========================================================================" << endl;
+        system("pause");
+        administrar_materia();
 }
+
 void leer_materias()
 {
     string codigo, materia;
@@ -94,12 +102,15 @@ void leer_materias()
         {
             leer >> codigo;
             leer >> materia;
-            cout<< "\t\t" << codigo << "\t " << materia <<"\t\t" <<endl;
-            cout<<"-----------------------------------------------------"<<endl;
+            cout <<  "\t\t" << codigo << "\t " << materia <<"\t\t" <<endl;
+            cout << "-----------------------------------------------------" << endl;
         }
         leer.close();
      cout << "==========================================================" << endl;
+    system("pause");
+    administrar_materia();   
 }
+
 fstream leer_archivo(string entidad)
 {
     fstream leer;
@@ -110,20 +121,27 @@ fstream leer_archivo(string entidad)
     }
     else
     {
-        cout << "El archivo no se encuentra diponible." << endl;
+        cout  << "El archivo no se encuentra diponible." << endl;
     }
 }
+
 void crear_materia()
 {
     struct materia dat_materia;
-    cout << "Digite el codigo de la materia. " << endl;
+    cout << "================================================================" << endl;
+    cout << "\t\tDigite el codigo de la materia: " << endl;
     cin >> dat_materia.codigo;
-    cout << "Digite el nombre de la materia." << endl;
+    cout <<"----------------------------------------------------------------" << endl;
+    cout << "\t\tDigite el nombre de la materia: " << endl;
     cin >> dat_materia.nom_materia;
+    cout << "----------------------------------------------------------------" << endl;
     string registro = dat_materia.codigo + " " + dat_materia.nom_materia;
     escribir_archivo("materia.txt", registro);
+    cout << "================================================================" << endl;
+    system("pause");
     administrar_materia();
 }
+
 void escribir_archivo(string entidad, string registro)
 {
     fstream new_file;
@@ -135,25 +153,30 @@ void escribir_archivo(string entidad, string registro)
     else
     {
 
-        cout << "registro agregado." << endl;
+        cout << "\t\tregistro agregado." << endl;
         new_file <<"\n" << registro ;
         new_file.close();
     }
 }
+
 int opciones_base(string entidad)
 {
     int opc;
-    cout << "Digite 1: Si quiere crear " << entidad << endl;
-    cout << "Digite 2: Si quiere leer " << entidad << endl;
-    cout << "Digite 3: Si quiere actualizar " << entidad << endl;
-    cout << "Digite 4: Si quiere eliminar " << entidad << endl;
-    cout << "Digite 5: Si quiere volver al menu anterior." << endl;
+    cout << "==========================================================================" << endl;
+    cout << "==\t\tDigite 1: |\tSi quiere crear " << entidad << endl;
+    cout << "==\t\tDigite 2: |\tSi quiere leer " << entidad << endl;
+    cout << "==\t\tDigite 3: |\tSi quiere actualizar " << entidad << endl;
+    cout << "==\t\tDigite 4: |\tSi quiere eliminar " << entidad << endl;
+    cout << "==\t\tDigite 5: |\tSi quiere volver al menu anterior." << endl;
+    cout << "==\t\tDigite 0: |\tpara salir" << endl;
+    cout << "==========================================================================" << endl;
     cin >> opc;
     return opc;
 }
+
 int administrar_materia()
 {
-    int opc = opciones_base("materia");
+    int opc = opciones_base("materias");
     switch (opc)
     {
     case 1:
@@ -168,10 +191,17 @@ int administrar_materia()
     case 4:
         eliminar_materia();
         break;
+    case 5:
+        funcion_admin();
+        break;
+    case 0:
+        return 0;
+        break;
     default:
         break;
     }
 }
+
 int funcion_admin()
 {
     int opc;
@@ -183,7 +213,7 @@ int funcion_admin()
     cout << "==\t\tDigite 3: |\tSi quiere administrar materias.\t\t==" << endl;
     cout << "==\t\tDigite 4: |\tSi quiere administrar nota.\t\t==" << endl;
     cout << "==\t\tDigite 5: |\tSi quiere volver al menu anterior.\t==" << endl;
-    cout << "==\t\tDigite 0: |\tpara salir:\t\t\t\t==" << endl;
+    cout << "==\t\tDigite 0: |\tpara salir.\t\t\t\t==" << endl;
     cout << "==========================================================================" << endl;
     cin >> opc;
     switch (opc)
@@ -210,14 +240,17 @@ int funcion_admin()
         break;
     }
 }
+
 void funcion_profesor()
 {
     cout << "Bienvenido a la zona de profesor." << endl;
 }
+
 void funcion_estudiante()
 {
     cout << "Bienvenido a la zona de estudiante." << endl;
 }
+
 int menu()
 {
     int opc;
@@ -251,4 +284,5 @@ int menu()
         menu();
         break;
     }
+
 }
