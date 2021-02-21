@@ -8,26 +8,31 @@ int menu(); //Menu principal
 void escribir_archivo(string entidad, string registro); //Funcion dedicada a escribir archivos    
 fstream leer_archivo(string entidad); //Funcion dedicada para leer archivos
 int funcion_admin();
-    int administrar_materia(); //funciones para materias.
+    int administrar_estudiante(); //Crud para los estudiantes
+        void crear_estudiante();
+        void leer_estudiante();
+        void editar_estudiante();
+        void eliminar_estudiante();
+
+    int administrar_profesor();
+
+    int administrar_materia(); //Crud para las materias
         void crear_materia();
         void leer_materias();
         void editar_materia ();
         void eliminar_materia();
 
-    int administrar_estudiante(); //funciones para estudiantes
-        void crear_estudiante();
-        void leer_estudiante();
-        void editar_estudiante();
-        void eliminar_estudiante();
+
+
 void funcion_profesor();
 void funcion_estudiante();
 
-struct materia //estructura para la materia
+struct materia //estructura para las materias
 {
     string codigo;
     string nom_materia;
 };
-struct estudiante //estructura para el estudiante
+struct estudiante //estructura para los estudiantes
 {
     string codigo;
     string nom_estudiante;
@@ -150,7 +155,6 @@ int funcion_admin()
         administrar_estudiante();
         break;
     case 2:
-
         break;
     case 3:
         system("cls");
@@ -338,6 +342,7 @@ void eliminar_estudiante(){
         system("cls");
         administrar_estudiante();
 }
+
 
 
 int administrar_materia()
