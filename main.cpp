@@ -272,39 +272,36 @@ void leer_estudiante(){
 }
 
 void editar_estudiante(){
-    string codigo, comparar;//,estudiante;
-    string nom_estudiante, ape_estudiante, semestre;
-    string cop_nom_estudiante, cop_ape_estudiante, cop_semestre;
+    string codigo, comparar, nuevo_nombre, nuevo_apellido, nuevo_semestre;
+    string nombre, apellido, semestre;
     fstream leer = leer_archivo("estudiante.txt");
         cout << "==========================================================================" << endl;
         cout << "\t\tDigite el codigo del estudiante que desea actualizar." << endl;
         cin >> comparar;
         cout <<"---------------------------------------------------------------------------" << endl;
         cout << "\t\tQue nombre desea colocarle al estudiante. " << comparar << "?"<< endl;
-        cin >> nom_estudiante;
+        cin >> nuevo_nombre;
         cout <<"---------------------------------------------------------------------------" << endl;
         cout << "\t\tQue apellido desea al estudiante " << comparar << "?"<< endl;
-        cin >> ape_estudiante;
+        cin >> nuevo_apellido;
         cout <<"---------------------------------------------------------------------------" << endl;
         cout << "\t\tQue semestre quiere colocarle al estudiante. " << comparar << "?"<< endl;
-        cin >> semestre;
+        cin >> nuevo_semestre;
         cout <<"---------------------------------------------------------------------------" << endl;
         while (!leer.eof())
         {
             leer >> codigo;
-            leer >> nom_estudiante;
-            leer >> ape_estudiante;
+            leer >> nombre;
+            leer >> apellido;
             leer >> semestre;
-
             if (comparar == codigo)
             {
-                //estudiante = nom_estudiante + " " + ape_estudiante + " " + semestre;
-                cop_nom_estudiante = nom_estudiante;
-                cop_ape_estudiante = ape_estudiante; 
-                cop_semestre = semestre;
+                nombre = nuevo_nombre;
+                apellido = nuevo_apellido; 
+                semestre = nuevo_semestre;
             }
 
-            string registro = codigo + " " + cop_nom_estudiante + " " + cop_ape_estudiante + " " + cop_semestre;
+            string registro = codigo + " " + nombre + " " + apellido + " Semestre_" + semestre;
             escribir_archivo("temp.txt", registro);
         }
         leer.close();
@@ -432,30 +429,31 @@ void leer_profesor(){
 }
 
 void editar_profesor (){
-    string codigo, profesor, ape;
-    string nom, apellido, comparar;
+    string codigo, nombre, apellido, registro;
+    string nuevo_nombre, nuevo_apellido, comparar;
     fstream leer = leer_archivo("profesor.txt");
         cout << "==========================================================================" << endl;
         cout << "\t\tDigite el codigo del profesor que desea actualizar." << endl;
         cin >> comparar;
         cout <<"---------------------------------------------------------------------------" << endl;
         cout << "\t\tQue nombre desea colocarle al profesor de codigo: " << comparar << "?"<< endl;
-        cin >> nom;
+        cin >> nuevo_nombre;
         cout <<"---------------------------------------------------------------------------" << endl;
         cout << "\t\tQue apellido desea colocarle al profesor de codigo: " << comparar << "?"<< endl;
-        cin >> apellido;
+        cin >> nuevo_apellido;
         cout <<"---------------------------------------------------------------------------" << endl;
         while (!leer.eof())
         {
             leer >> codigo;
-            leer >> profesor;
-            leer >> ape;
+            leer >> nombre;
+            leer >> apellido;
             if (comparar == codigo)
             {
-                profesor = nom + " " + apellido;
+                nombre = nuevo_nombre;
+                apellido = nuevo_apellido;
             }
 
-            string registro = codigo + " " + profesor;
+            registro = codigo + " " + nombre + " " + apellido;
             escribir_archivo("temp.txt", registro);
         }
         leer.close();
@@ -653,10 +651,16 @@ void eliminar_materia (){
 
 void funcion_profesor()
 {
-    cout << "Bienvenido a la zona de profesor." << endl;
+    int opc;
+    cout << "==========================================================================" << endl;
+    cout << "==\t\tBienvenido a la zona de profesor.\t\t\t==" << endl;
+    cout << "==========================================================================" << endl;
 }
 
 void funcion_estudiante()
 {
-    cout << "Bienvenido a la zona de estudiante." << endl;
+    int opc;
+    cout << "==========================================================================" << endl;
+    cout << "==\t\tBienvenido a la zona de estudiantes.\t\t\t==" << endl;
+    cout << "==========================================================================" << endl;
 }
