@@ -15,11 +15,15 @@ int funcion_admin();
         void eliminar_estudiante();
 
     int administrar_profesor();
+        void crear_profesor();
+        void leer_profesor();
+        void editar_profesor();
+        void eliminar_profesor();
 
     int administrar_materia(); //Crud para las materias
         void crear_materia();
         void leer_materias();
-        void editar_materia ();
+        void editar_materia();
         void eliminar_materia();
 
 
@@ -39,13 +43,19 @@ struct estudiante //estructura para los estudiantes
     string ape_estudiante;
     string semestre;  
 };
+struct profesor //estructura para los profesores
+{
+    string codigo;
+    string nom_profesor;
+    string ape_profesor; 
+};
+
 
 int main()
 {
     menu();
     return 0;
 }
-
 int menu()
 {
     int opc;
@@ -155,13 +165,15 @@ int funcion_admin()
         administrar_estudiante();
         break;
     case 2:
+        system("cls");
+        administrar_profesor();
         break;
     case 3:
         system("cls");
         administrar_materia();
         break;
     case 4:
-
+ 
         break;
     case 5:
         system("cls");
@@ -344,6 +356,156 @@ void eliminar_estudiante(){
 }
 
 
+int administrar_profesor(){
+    int opc = opciones_base("profesores.");
+    switch (opc)
+    {
+    case 1:
+        system("cls");
+        crear_profesor();
+        break;
+    case 2:
+        system("cls");
+        leer_profesor();
+        break;
+    case 3:
+        system("cls");
+        editar_profesor();
+        break;
+    case 4:
+        system("cls");
+        eliminar_profesor();
+        break;
+    case 5:
+        system("cls");
+        funcion_admin();
+        break;
+    case 0:
+        return 0;
+        break;
+    default:
+        cout << "\n\t\t-Error: La opcion digitada no es valida..." << endl;
+        system("pause");
+        system("cls");
+        administrar_estudiante();
+        break;
+    }
+}
+
+void crear_profesor(){
+    struct profesor dat_profe;
+    cout << "================================================================" << endl;
+    cout << "\t\tDigite el codigo del profesor: " << endl;
+    cin >> dat_profe.codigo;
+    cout <<"----------------------------------------------------------------" << endl;
+    cout << "\t\tDigite el nombre del profesor: " << endl;
+    cin >> dat_profe.nom_profesor;
+    cout << "----------------------------------------------------------------" << endl;
+    cout << "\t\tDigite el apellido del profesor: " << endl;
+    cin >> dat_profe.ape_profesor;
+    cout << "----------------------------------------------------------------" << endl;
+    string registro = dat_profe.codigo + " " + dat_profe.nom_profesor + " " + dat_profe.ape_profesor;
+    escribir_archivo("profesor.txt", registro);
+    cout << "================================================================" << endl;
+    system("pause");
+    system("cls");
+    administrar_profesor();
+}
+
+void leer_profesor(){
+    string codigo, profesor, apellido;
+    fstream leer = leer_archivo("profesor.txt");
+     cout << "==========================================================" << endl;
+     while (!leer.eof())
+        {
+            leer >> codigo;
+            leer >> profesor;
+            leer >> apellido;
+            cout <<  "\t\t" << codigo << "\t " << profesor << "\t" << apellido << "\t\t" <<endl;
+            cout << "-----------------------------------------------------" << endl;
+        }
+        leer.close();
+     cout << "==========================================================" << endl;
+    system("pause");
+    system("cls");
+    administrar_profesor();   
+}
+
+void editar_profesor (){
+    string codigo, profesor, ape;
+    string nom, apellido, comparar;
+    fstream leer = leer_archivo("profesor.txt");
+        cout << "==========================================================================" << endl;
+        cout << "\t\tDigite el codigo del profesor que desea actualizar." << endl;
+        cin >> comparar;
+        cout <<"---------------------------------------------------------------------------" << endl;
+        cout << "\t\tQue nombre desea colocarle al profesor de codigo: " << comparar << "?"<< endl;
+        cin >> nom;
+        cout <<"---------------------------------------------------------------------------" << endl;
+        cout << "\t\tQue apellido desea colocarle al profesor de codigo: " << comparar << "?"<< endl;
+        cin >> apellido;
+        cout <<"---------------------------------------------------------------------------" << endl;
+        while (!leer.eof())
+        {
+            leer >> codigo;
+            leer >> profesor;
+            leer >> ape;
+            if (comparar == codigo)
+            {
+                profesor = nom + " " + apellido;
+            }
+
+            string registro = codigo + " " + profesor;
+            escribir_archivo("temp.txt", registro);
+        }
+        leer.close();
+        remove ("profesor.txt");
+        rename ("temp.txt", "profesor.txt");
+        cout << "==========================================================================" << endl;
+        system("pause");
+        system("cls");
+        administrar_profesor();
+}
+
+void eliminar_profesor(){
+    string codigo, comparar;
+    string nom_profesor, ape_profesor;
+    string respuesta;
+    fstream leer = leer_archivo("profesor.txt");
+    cout << "==========================================================================" << endl;
+        cout << "\t\tDigite el codigo del profesor que desea eliminar."<<endl;
+        cin >> comparar;
+        cout <<"---------------------------------------------------------------------------" << endl;
+        while (!leer.eof())
+        {
+            leer >> codigo;
+            leer >> nom_profesor;
+            leer >> ape_profesor;
+            if (comparar != codigo)
+            {
+                string registro = codigo + " " + nom_profesor + " " + ape_profesor;
+                escribir_archivo("temp.txt", registro);
+            } 
+        }
+        cout <<"---------------------------------------------------------------------------" << endl;
+        cout << "\t\tDesee eliminar algun otro registro?"<<endl;
+        cin >> respuesta;
+        leer.close();
+        remove ("profesor.txt");
+        rename ("temp.txt", "profesor.txt");
+        if (respuesta == "si")
+        {
+            system("cls");
+            eliminar_profesor();
+        } else if (respuesta == "no")
+        {
+            system("cls");
+            administrar_profesor();
+        }
+        system("cls");
+        administrar_profesor();
+}
+
 
 int administrar_materia()
 {
@@ -391,6 +553,7 @@ void crear_materia()
     cout <<"----------------------------------------------------------------" << endl;
     cout << "\t\tDigite el nombre de la materia: " << endl;
     cin >> dat_materia.nom_materia;
+    //cin.ignore(); getline(cin, dat_materia.nom_materia);
     cout << "----------------------------------------------------------------" << endl;
     string registro = dat_materia.codigo + " " + dat_materia.nom_materia;
     escribir_archivo("materia.txt", registro);
