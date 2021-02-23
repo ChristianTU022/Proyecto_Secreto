@@ -26,9 +26,15 @@ int funcion_admin();
         void editar_materia();
         void eliminar_materia();
 
-
+    int administrar_grupo(); //Menu para administrar los grupos.
+        void crear_grupo();
+        void agregar_estudiantes();
+        //void eliminar_estudiantes_grupo();
+        //void editar_grupo();
+        string buscar_materia(string codigo_materia);
 
 void funcion_profesor();
+    void buscar_materia_profesor();
 void funcion_estudiante();
 
 struct materia //estructura para las materias
@@ -49,6 +55,15 @@ struct profesor //estructura para los profesores
     string nom_profesor;
     string ape_profesor; 
 };
+
+struct grupo
+{
+    string codigo;
+    string cod_profesor;
+    string cod_estudiante;
+    string cod_materia;
+};
+
 
 
 int main()
@@ -153,7 +168,7 @@ int funcion_admin()
     cout << "==\t\tDigite 1: |\tSi quiere administrar estudiantes.\t==" << endl;
     cout << "==\t\tDigite 2: |\tSi quiere administrar profesores.\t==" << endl;
     cout << "==\t\tDigite 3: |\tSi quiere administrar materias.\t\t==" << endl;
-    cout << "==\t\tDigite 4: |\tSi quiere administrar nota.\t\t==" << endl;
+    cout << "==\t\tDigite 4: |\tSi quiere administrar los grupos.\t==" << endl;
     cout << "==\t\tDigite 5: |\tSi quiere volver al menu anterior.\t==" << endl;
     cout << "==\t\tDigite 0: |\tpara salir.\t\t\t\t==" << endl;
     cout << "==========================================================================" << endl;
@@ -173,7 +188,8 @@ int funcion_admin()
         administrar_materia();
         break;
     case 4:
- 
+        system("cls");
+        administrar_grupo();
         break;
     case 5:
         system("cls");
@@ -649,12 +665,188 @@ void eliminar_materia (){
 }
 
 
+int administrar_grupo(){
+    int opc;
+    string nombre;
+    cout << "==========================================================================" << endl;
+    cout << "==\t\tDigite 1: |\tSi quiere crear un grupo." << endl;
+    cout << "==\t\tDigite 2: |\tSi quiere agregar estudiantes a un grupo." << endl;
+    cout << "==\t\tDigite 3: |\tSi quiere eliminar estudiantes del grupo" << endl;
+    cout << "==\t\tDigite 4: |\tSi quiere actualizar grupo" << endl;
+    // cout << "==\t\tDigite 5: |\tSi quiere eliminar " << endl;
+    cout << "==\t\tDigite 6: |\tSi quiere volver al menu anterior." << endl;
+    cout << "==\t\tDigite 0: |\tpara salir" << endl;
+    cout << "==========================================================================" << endl;
+    cin >> opc;
+    string comparar = "000";
+    switch (opc)
+    {
+    case 1:
+        system("cls");
+        crear_grupo();
+        break;
+    case 2:
+        system("cls");
+        agregar_estudiantes();
+        break;
+    case 3:
+        //system("cls");
+        //eliminar_estudiantes_grupo();
+        break;
+    case 4:
+        nombre = buscar_materia(comparar);
+        //system("cls");
+        //editar_grupo();
+        break;
+    case 5:
+        system("cls");
+        funcion_admin();
+        break;
+    case 0:
+        return 0;
+        break;
+    default:
+        break;
+    }
+}
+
+void crear_grupo(){
+    struct grupo dat_grupo;
+    cout << "================================================================" << endl;
+    cout << "\t\tDigite el codigo del grupo a crear: " << endl;
+    cin >> dat_grupo.codigo;
+    cout <<"----------------------------------------------------------------" << endl;
+    cout << "\t\tDigite el codigo del profesor a cargo de este grupo: " << endl;
+    cin >> dat_grupo.cod_profesor;
+    cout << "----------------------------------------------------------------" << endl;
+    cout << "\t\tDigite el codigo de la materia en este grupo: " << endl;
+    cin >> dat_grupo.cod_materia;
+    cout << "----------------------------------------------------------------" << endl;
+    string codigo_grupo = dat_grupo.codigo + ".txt";
+    escribir_archivo(codigo_grupo, "");
+    string registro = dat_grupo.codigo + " " + dat_grupo.cod_profesor + " " + dat_grupo.cod_materia;
+    escribir_archivo("grupos.txt", registro);
+    cout << "================================================================" << endl;
+    system("pause");
+    system("cls");
+    administrar_grupo();  
+}
+
+void agregar_estudiantes(){
+    struct grupo dat_grupo;
+    cout << "================================================================" << endl;
+    cout << "Digite el codigo del grupo al que desea agregar estudiantes: " << endl;
+    cin >> dat_grupo.codigo;
+    cout <<"----------------------------------------------------------------" << endl;
+    cout << "\t\tDigite el codigo del estudiante a agregar a este grupo: " << endl;
+    cin >> dat_grupo.cod_estudiante;
+    cout << "----------------------------------------------------------------" << endl;
+    string registro = dat_grupo.cod_estudiante + " " + "0";
+    string codigo_grupo = dat_grupo.codigo + ".txt";
+    escribir_archivo(codigo_grupo, registro);
+    cout << "================================================================" << endl;
+    system("pause");
+    system("cls");
+    administrar_grupo();  
+}
+/*
+void eliminar_estudiantes_grupo(){
+    string cod_grupo, codigo, cero, comparar;
+    string respuesta;
+     cout << "==========================================================================" << endl;
+        cout << "\tDigite el numero del grupo del que desea eliminar estudiantes."<<endl;
+        cin >> cod_grupo;
+        cout <<"---------------------------------------------------------------------------" << endl;
+        string juntar = cod_grupo + ".txt";
+    fstream leer = leer_archivo();
+        cout << "\t\tDigite el codigo del estudiante que desea quitar:"<<endl;
+        cin >> comparar;
+        cout <<"---------------------------------------------------------------------------" << endl;
+        while (!leer.eof())
+        {
+            leer >> codigo;
+            leer >> cero;
+            if (comparar != codigo)
+            {
+                string registro = codigo + " " + cero;
+                escribir_archivo("temp.txt", registro);
+            } 
+        }
+        cout <<"---------------------------------------------------------------------------" << endl;
+        cout << "\t\tDesee eliminar algun otro registro?"<<endl;
+        cin >> respuesta;
+        leer.close();
+        remove ("materia.txt");
+        rename ("temp.txt", "materia.txt");
+        if (respuesta == "si")
+        {
+            system("cls");
+            eliminar_estudiantes_grupo();
+        } else if (respuesta == "no")
+        {
+            system("cls");
+            administrar_grupo();
+        }
+        system("cls");
+        administrar_grupo();
+}
+
+void editar_grupo(){
+    cout<<" En mantenimiento..."<<endl;
+    system("pause");
+    system("cls");
+    administrar_grupo();
+}
+*/
+
+string buscar_materia(string codigo_materia){
+    string codigo, nombre, nombre_materia;
+    bool encontrado = false;
+    fstream leer = leer_archivo("materia.txt");
+        while (!leer.eof() && !encontrado)
+        {
+            leer >> codigo;
+            leer >> nombre;
+            if (codigo_materia == codigo)
+            {
+                nombre_materia = nombre;
+                encontrado = true;
+            }
+        }
+        leer.close();
+        return nombre_materia;
+}
+
+
 void funcion_profesor()
 {
     int opc;
     cout << "==========================================================================" << endl;
     cout << "==\t\tBienvenido a la zona de profesor.\t\t\t==" << endl;
     cout << "==========================================================================" << endl;
+    buscar_materia_profesor();
+}
+
+void buscar_materia_profesor(){
+    string codigo, codigo_grupo, codigo_profesor, codigo_materia;
+    cout << "================================================================" << endl;
+    cout << "\t\tDigite el codigo del profesor: " << endl;
+    cin >> codigo;
+    cout <<"----------------------------------------------------------------" << endl;
+    fstream leer = leer_archivo("grupos.txt");
+        while (!leer.eof())
+        {
+            leer >> codigo_grupo;
+            leer >> codigo_profesor;
+            leer >> codigo_materia;
+            if (codigo == codigo_profesor)
+            {
+                string nombre_materia = buscar_materia(codigo_materia);
+                cout << codigo_grupo + " " + nombre_materia << endl;
+            }
+        }
+        leer.close();
+    cout << "================================================================" << endl;
 }
 
 void funcion_estudiante()
